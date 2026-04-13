@@ -4,6 +4,7 @@ import { ArrowUpRight } from "lucide-react";
 import { motion } from "motion/react";
 import { featuresData } from "../data/features";
 import type { IFeature } from "../types";
+import { Link } from "react-router-dom";
 
 export default function FeaturesSection() {
     return (
@@ -37,7 +38,7 @@ export default function FeaturesSection() {
                     viewport={{ once: true }}
                     transition={{ type: "spring", stiffness: 320, damping: 70, mass: 1 }}
                 >
-                    PrebuiltUI helps you build faster by transforming your design vision into fully functional, production-ready UI components.
+                    KlipFrame helps you grow faster by transforming your video ideas into stunning, click-worthy thumbnails — powered by AI.
                 </motion.p>
                 <div className="grid grid-cols-1 md:grid-cols-3 mt-8 gap-10">
                     <motion.div className="md:col-span-2"
@@ -46,7 +47,7 @@ export default function FeaturesSection() {
                         viewport={{ once: true }}
                         transition={{ type: "spring", stiffness: 240, damping: 70, mass: 1 }}
                     >
-                        <img className="h-full w-auto" src="/assets/features-showcase-1.png" alt="features showcase" width={1000} height={500} />
+                        <img className="h-full w-auto rounded-2xl" src="/assets/feature-1.png"  alt="features showcase" width={1000} height={500} />
                     </motion.div>
                     <motion.div className="md:col-span-1"
                         initial={{ y: 150, opacity: 0 }}
@@ -54,13 +55,13 @@ export default function FeaturesSection() {
                         viewport={{ once: true }}
                         transition={{ delay: 0.15, type: "spring", stiffness: 320, damping: 70, mass: 1 }}
                     >
-                        <img src="/assets/features-showcase-2.png" alt="features showcase" width={1000} height={500} className="hover:-translate-y-0.5 transition duration-300" />
-                        <h3 className="text-[24px]/7.5 text-slate-300 font-medium mt-6">Better design with highest revenue and profits </h3>
-                        <p className="text-slate-300 mt-2">PrebuiltUI empowers you to build beautifully and scale effortlessly.</p>
-                        <a href="https://prebuiltui.com" className="group flex items-center gap-2 mt-4 text-blue-600 hover:text-blue-700 transition">
+                        <img src="/assets/feature-2.jpeg" alt="features showcase" width={1000} height={500} className="hover:-translate-y-0.5 transition duration-300 rounded-[20px]" />
+                        <h3 className="text-[24px]/7.5 text-slate-300 font-medium mt-6">Better thumbnails. More views. Higher revenue.</h3>
+                        <p className="text-slate-300 mt-2">KlipFrame empowers creators to generate stunning thumbnails and scale their channel effortlessly.</p>
+                        <Link to="/" className="group flex items-center gap-2 mt-4 text-blue-600 hover:text-blue-700 transition">
                             Learn more about the product
                             <ArrowUpRight className="size-5 group-hover:translate-x-0.5 transition duration-300" />
-                        </a>
+                        </Link>
                     </motion.div>
                 </div>
             </div>
