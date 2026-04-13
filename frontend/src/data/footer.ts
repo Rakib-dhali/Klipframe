@@ -5,26 +5,26 @@ export const footerData: IFooter[] = [
         title: "Product",
         links: [
             { name: "Home", href: "#" },
-            { name: "Support", href: "#support" },
+            { name: "Features", href: "#features" },
             { name: "Pricing", href: "#pricing" },
-            { name: "Affiliate", href: "#affiliate" },
+            { name: "Changelog", href: "#changelog" },
         ]
     },
     {
         title: "Resources",
         links: [
-            { name: "Company", href: "#company" },
-            { name: "Blogs", href: "#blogs" },
+            { name: "Blog", href: "#blog" },
+            { name: "Tutorials", href: "#tutorials" },
             { name: "Community", href: "#community" },
-            { name: "Careers", href: "#careers" },
+            { name: "Support", href: "#support" },
             { name: "About", href: "#about" },
         ]
     },
     {
         title: "Legal",
         links: [
-            { name: "Privacy", href: "#privacy" },
-            { name: "Terms", href: "#terms" },
+            { name: "Privacy Policy", href: "#privacy" },
+            { name: "Terms of Service", href: "#terms" },
         ]
     }
 ];
