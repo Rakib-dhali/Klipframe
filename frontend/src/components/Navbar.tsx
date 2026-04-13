@@ -24,13 +24,13 @@ export default function Navbar() {
 
                 <div className="hidden md:flex items-center gap-8 transition duration-500">
                     {newNavLinks.map((link: INavLink) => (
-                        <NavLink key={link.name} to={link.href} className="hover:text-pink-500 transition">
+                        <NavLink key={link.name} to={link.href} className="hover:text-blue-500 transition">
                             {link.name}
                         </NavLink>
                     ))}
                 </div>
 
-                <button onClick={() => navigate("/login")} className="hidden md:block px-6 py-2.5 bg-pink-600 hover:bg-pink-700 active:scale-95 transition-all rounded-full">
+                <button onClick={() => navigate("/login")} className="hidden md:block px-6 py-2.5 bg-blue-600 hover:bg-blue-700 active:scale-95 transition-all rounded-full">
                     Get Started
                 </button>
                 <button onClick={() => setIsOpen(true)} className="md:hidden">
@@ -44,7 +44,7 @@ export default function Navbar() {
                         {link.name}
                     </NavLink>
                 ))}
-                <button onClick={() => setIsOpen(false)} className="active:ring-3 active:ring-white aspect-square size-10 p-1 items-center justify-center bg-pink-600 hover:bg-pink-700 transition text-white rounded-md flex">
+                <button onClick={() => setIsOpen(false)} className="active:ring-3 active:ring-white aspect-square size-10 p-1 items-center justify-center bg-blue-600 hover:bg-blue-700 transition text-white rounded-md flex">
                     <XIcon />
                 </button>
             </div>

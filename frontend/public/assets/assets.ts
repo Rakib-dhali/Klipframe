@@ -1,10 +1,10 @@
-import thumb_1 from "./thumb_1.jpg";
-import thumb_2 from "./thumb_2.jpg";
-import thumb_3 from "./thumb_3.jpg";
-import thumb_4 from "./thumb_4.jpg";
-import thumb_5 from "./thumb_5.jpg";
-import thumb_6 from "./thumb_6.jpg";
-import thumb_7 from "./thumb_7.jpg";
+const thumb_1 = "/assets/thumb_1.jpg";
+const thumb_2 = "/assets/thumb_2.jpg";
+const thumb_3 = "/assets/thumb_3.jpg";
+const thumb_4 = "/assets/thumb_4.jpg";
+const thumb_5 = "/assets/thumb_5.jpg";
+const thumb_6 = "/assets/thumb_6.jpg";
+const thumb_7 = "/assets/thumb_7.jpg";
 
 export const aspectRatios = ["16:9", "1:1", "9:16"];
 export type AspectRatio = (typeof aspectRatios)[number];

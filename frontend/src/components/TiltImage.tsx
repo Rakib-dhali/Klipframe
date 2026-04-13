@@ -52,8 +52,8 @@ export default function TiltedImage({ rotateAmplitude = 3, }) {
             transition={{ type: "spring", stiffness: 320, damping: 70, mass: 1 }}
         >
             <motion.div className="relative transform-3d w-full max-w-4xl" style={{ rotateX, rotateY }} >
-                <motion.img src="/assets/hero-section-showcase.png"
-                    className="w-full rounded-[15px] will-change-transform transform-[translateZ(0)]"
+                <motion.img src="/assets/hero-image.png"
+                    className="w-full border p-1 bg-linear-180 from-blue-200 to to-transparent rounded-[15px] will-change-transform transform-[translateZ(0)]"
                     alt="hero section showcase"
                 />
             </motion.div>
