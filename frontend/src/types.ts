@@ -63,3 +63,40 @@ export interface SectionProps {
     buttonText: string;
     buttonHref: string;
 }
+
+export interface FormData {
+    name?: string;
+    email: string;
+    password: string;
+}
+
+
+export interface IThumbnail {
+    _id: string;
+    userId: string;
+    title: string;
+    description?: string;
+    style: "Bold & Graphic" | "Tech/Futuristic" | "Minimalist" | "Photorealistic" | "Illustrated";
+    aspect_ratio?: "16:9" | "1:1" | "9:16";
+    color_scheme?: "vibrant" | "sunset" | "forest" | "neon" | "purple" | "monochrome" | "ocean" | "pastel";
+    text_overlay?: boolean;
+    image_url?: string;
+    prompt_used?: string;
+    user_prompt?: string;
+    isGenerating?: boolean;
+    createdAt?: Date;
+    updatedAt?: Date;
+}
+
+export type ThumbnailStyle = {
+    label: string;
+    desc: string;
+    icon: React.ReactNode;
+}
+
+export type ColorScheme = { id: string; name: string; colors: string[] };
+
+export type ModelOption = {
+    name: string;
+    credit: number;
+}
