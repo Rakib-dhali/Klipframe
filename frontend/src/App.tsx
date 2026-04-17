@@ -18,7 +18,7 @@ export default function App() {
       <LenisScroll />
       <div className={isLogin ? "blur-sm pointer-events-none select-none" : ""}>
         <Navbar />
-        <main className="pt-20">
+        <main >
           <Routes>
             <Route path="/" element={<HomePage />} />
             <Route path="/generate" element={<Generate />} />

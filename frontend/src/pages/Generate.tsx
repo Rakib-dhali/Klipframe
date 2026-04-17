@@ -1,5 +1,5 @@
-import { useState } from "react";
-import { useParams } from "react-router-dom";
+import { act, useState } from "react";
+// import { useParams } from "react-router-dom";
 import type { ColorScheme, IThumbnail, ThumbnailStyle } from "../types";
 import {
   aspectRatios,
@@ -13,6 +13,7 @@ import {
   Square,
   RectangleHorizontal,
   ChevronDown,
+  Image,
 } from "lucide-react";
 
 const Generate = () => {
@@ -33,20 +34,48 @@ const Generate = () => {
   const [colorScheme, setColorScheme] = useState<ColorScheme["id"]>(
     colorSchemes[0].id,
   );
+  const [textOverlay, setTextOverlay] = useState(true)
   const [modelOpen, setModelOpen] = useState<boolean>(false);
   const [selectedModel, setSelectedModel] = useState<string>("premium");
-
-  const currentModel = models.find((m) => m.name === selectedModel);
   const [additionalInfo, setAdditionalInfo] = useState<string>("");
   const [generating, setGenerating] = useState(false);
   const [generated, setGenerated] = useState(false);
-
+  
+  const currentModel = models.find((m) => m.name === selectedModel);
   const activeStyle: ThumbnailStyle | undefined = thumbnailStyles.find(
     (s) => s === style,
   );
+  const activeColor:ColorScheme  | undefined = colorSchemes.find((c) => c.id === colorScheme);
 
-  return (
-    <main className="px-4 md:px-16 lg:px-24 xl:px-32">
+   const previewCardStyle =
+    aspectRatio === "16:9"
+      ? "aspect-video w-full max-w-md"
+      : aspectRatio === "1:1"
+      ? "aspect-square w-56"
+      : "w-36 aspect-[9/16]";
+
+ 
+    return (
+  <div className="relative min-h-screen overflow-hidden space-y-10 pt-20 lg:pt-30 mx-auto px-4 md:px-16 lg:px-24 xl:px-32">
+    {/* Blur orbs — same style as HeroSection */}
+    <div className="absolute top-20 -z-10 left-1/4 size-72 bg-blue-600 blur-[300px]" />
+      {/* ── Banner ── */}
+      <div className=" border-2 rounded-2xl   border-blue-600/20 px-6 mx-5 py-5 flex flex-wrap items-center justify-between gap-3">
+        <div>
+          <h1 className="text-xl bg-gradient-to-r from-blue-600 to-blue-200 bg-clip-text text-transparent font-bold tracking-tight leading-snug">
+            Recreate Thumbnails
+          with AI
+          </h1>
+          <p className="mt-1 text-xs text-white/45 max-w-xs leading-relaxed">
+            Upload a thumbnail or paste a URL, add your changes, and get a
+            similar AI-recreated version instantly.
+          </p>
+        </div>
+        <button className="shrink-0 border border-white/30 rounded-full px-5 py-2 text-sm font-semibold flex items-center gap-1.5 hover:bg-white/10 transition-colors">
+          Try Now <span>→</span>
+        </button>
+      </div>
+    <main className="grid grid-cols-1 lg:grid-cols-[350px_1fr]  gap-5 p-5 ">
       {/* left */}
       <div className="bg-white/[0.04] border border-white/[0.08] rounded-2xl p-6">
         <h2 className="text-[17px] font-bold tracking-tight mb-1">
@@ -66,6 +95,7 @@ const Generate = () => {
             onChange={(e) => setTitle(e.target.value.slice(0, 100))}
             maxLength={100}
             placeholder="e.g. 10 Tips for Better Sleep"
+            required
             className="w-full bg-white/[0.06] border border-white/10 rounded-xl text-white text-sm px-3 py-2.5 outline-none placeholder:text-white/25 focus:border-blue-600 transition-colors"
           />
           <p className="text-right text-[11px] text-white/30 mt-1">
@@ -243,7 +273,7 @@ const Generate = () => {
         <button
           onClick={handleGenerate}
           disabled={generating || !title.trim()}
-          className="w-full bg-gradient-to-r from-blue-600 to-sky-600 disabled:opacity-40 disabled:cursor-not-allowed rounded-xl py-3.5 text-sm font-bold tracking-wide flex items-center justify-content-center justify-center gap-2 transition-opacity hover:opacity-90"
+          className="w-full bg-gradient-to-r from-blue-600 to-sky-600 text-white disabled:opacity-40 disabled:cursor-not-allowed rounded-xl py-3.5 text-sm font-bold tracking-wide flex items-center justify-content-center justify-center gap-2 transition-opacity hover:opacity-90"
         >
           {generating ? (
             <>
@@ -257,9 +287,79 @@ const Generate = () => {
       </div>
 
       {/* right */}
-      <div></div>
+      <div className={`bg-white/[0.03] border  border-white/[0.08] aspect-auto rounded-2xl p-6 flex flex-col`}>
+          <h2 className="text-[17px] font-bold tracking-tight mb-5">Preview</h2>
+
+          <div
+            className="flex-1 min-h-72 border border-dashed border-white/10 rounded-xl flex flex-col items-center justify-center relative overflow-hidden transition-all duration-500"
+            style={{
+            background:
+             generated && activeColor
+               ? `linear-gradient(135deg, ${activeColor.colors[0]}, ${activeColor.colors[1]}, ${activeColor.colors[2]})`
+               : "rgba(255,255,255,0.02)",
+}}
+          >
+            {/* Loading */}
+            {generating && (
+              <div className="absolute inset-0 bg-black/50 flex flex-col items-center justify-center gap-3 z-10">
+                <span className="w-9 h-9 border-[3px] border-blue-600/30 border-t-blue-600 rounded-full animate-spin" />
+                <p className="text-sm text-white/55">Generating your thumbnail...</p>
+              </div>
+            )}
+
+            {/* Empty state */}
+            {!generating && !generated && (
+              <div className="flex flex-col items-center gap-3 text-center">
+                <div className="size-12 bg-blue-400/40 rounded-full flex items-center justify-center"><Image/></div>
+                <div>
+                  <p className="text-sm font-semibold text-blue-600/45">Generate your first thumbnail</p>
+                  <p className="text-xs text-blue-200/25 mt-1">Fill out the form and click Generate</p>
+                </div>
+              </div>
+            )}
+
+            {/* Result */}
+            {!generating && generated && (
+              <div className="flex flex-col items-center gap-4 p-6 w-full animate-[fadeIn_0.5s_ease]">
+                <div
+                  className={`${previewCardStyle} rounded-xl flex flex-col items-center justify-center p-6 text-center`}
+                  style={{
+  background:
+    generated && activeColor
+      ? `linear-gradient(135deg, ${activeColor.colors[0]}, ${activeColor.colors[1]}, ${activeColor.colors[2]})`
+      : "rgba(255,255,255,0.02)",
+}}
+                >
+                  {textOverlay && (
+                    <p className="text-lg font-extrabold text-white text-center leading-snug tracking-tight drop-shadow-lg">
+                      {title}
+                    </p>
+                  )}
+                  {additionalInfo && (
+                    <p className="mt-2 text-[11px] text-white/70 text-center line-clamp-2">
+                      {additionalInfo}
+                    </p>
+                  )}
+                </div>
+
+                <div className="flex gap-2.5 mt-1">
+                  <button
+                    onClick={() => { setGenerated(false); }}
+                    className="bg-white/10 border border-white/15 rounded-lg text-white text-xs font-semibold px-4 py-1.5 hover:bg-white/20 transition-colors"
+                  >
+                    Regenerate
+                  </button>
+                  <button className="bg-gradient-to-r from-blue-600 to-sky-400 rounded-lg text-white text-xs font-bold px-4 py-1.5 hover:opacity-90 transition-opacity">
+                    Download
+                  </button>
+                </div>
+              </div>
+            )}
+          </div>
+        </div>
     </main>
-  );
+  </div>
+);
 };
 
 export default Generate;

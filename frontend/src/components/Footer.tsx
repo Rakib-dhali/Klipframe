@@ -2,10 +2,12 @@ import { footerData } from "../data/footer";
 import { motion } from "motion/react";
 import type { IFooterLink } from "../types";
 import { Link } from "react-router-dom";
+import footerLogo from "/assets/logo43.png"
 
 export default function Footer() {
   return (
     <footer className="flex flex-col text-center md:flex-row justify-center md:justify-between overflow-hidden gap-10 md:gap-20 mt-40 py-6 px-6 md:px-16 lg:px-24 xl:px-32 text-[13px] text-gray-500">
+      
       <motion.div
         className="flex flex-nowrap justify-between items-start gap-10 md:gap-35"
         initial={{ x: -150, opacity: 0 }}
@@ -13,6 +15,7 @@ export default function Footer() {
         viewport={{ once: true }}
         transition={{ type: "spring", stiffness: 280, damping: 70, mass: 1 }}
       >
+        <img className="w-15" src={footerLogo} alt="" />
         {footerData.map((section, index) => (
           <div key={index}>
             <p className="text-slate-100 font-semibold">{section.title}</p>
