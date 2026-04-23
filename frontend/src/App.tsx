@@ -8,10 +8,15 @@ import Generate from "./pages/Generate";
 import MyGeneration from "./pages/MyGeneration";
 import LoginPage from "./pages/Login";
 import Preview from "./pages/preview";
+import { useEffect } from "react";
 
 export default function App() {
   const { pathname } = useLocation();
   const isLogin = pathname === "/login";
+
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, [pathname]);
 
   return (
     <>

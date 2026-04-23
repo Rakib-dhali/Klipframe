@@ -1,6 +1,5 @@
-import { act, useState } from "react";
-// import { useParams } from "react-router-dom";
-import type { ColorScheme, IThumbnail, ThumbnailStyle } from "../types";
+import { useState } from "react";
+import type { ColorScheme, ThumbnailStyle } from "../types";
 import {
   aspectRatios,
   colorSchemes,
@@ -17,16 +16,7 @@ import {
 } from "lucide-react";
 
 const Generate = () => {
-  const handleGenerate = () => {
-    if (!title.trim()) return;
-    setGenerating(true);
-    setGenerated(false);
-    setTimeout(() => {
-      setGenerating(false);
-      setGenerated(true);
-    }, 2200);
-  };
-
+   
   const [title, setTitle] = useState<string>("");
   const [aspectRatio, setAspectRatio] = useState<string>(aspectRatios[0]);
   const [style, setStyle] = useState<ThumbnailStyle>(thumbnailStyles[0]);
@@ -55,10 +45,21 @@ const Generate = () => {
       : "w-36 aspect-[9/16]";
 
  
+      const handleGenerate = () => {
+    if (!title.trim()) return;
+    setGenerating(true);
+    setGenerated(false);
+    setTimeout(() => {
+      setGenerating(false);
+      setGenerated(true);
+    }, 2200);
+  };
+
     return (
   <div className="relative min-h-screen overflow-hidden space-y-10 pt-20 lg:pt-30 mx-auto px-4 md:px-16 lg:px-24 xl:px-32">
     {/* Blur orbs — same style as HeroSection */}
     <div className="absolute top-20 -z-10 left-1/4 size-72 bg-blue-600 blur-[300px]" />
+    <div className="absolute bottom-20 -z-10 right-1/4 size-72 bg-blue-600 blur-[300px]" />
       {/* ── Banner ── */}
       <div className=" border-2 rounded-2xl   border-blue-600/20 px-6 mx-5 py-5 flex flex-wrap items-center justify-between gap-3">
         <div>
