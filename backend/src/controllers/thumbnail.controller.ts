@@ -7,6 +7,8 @@ import {
 } from "@google/genai";
 import ai from "../config/genai.js";
 import path from "path";
+import fs from "fs";
+import { v2 as cloudinary } from "cloudinary";
 
 const stylePrompt = {
   "Bold & Graphic":
@@ -123,38 +125,59 @@ export async function createThumbnail(request: Request, response: Response) {
         ${stylePrompt[style as keyof typeof stylePrompt]},
         topic: ${title}
 `;
-    if (color_scheme){
-      prompt += `color scheme: ${colorSchemeDescription[color_scheme as keyof typeof colorSchemeDescription]}`
+    if (color_scheme) {
+      prompt += `color scheme: ${colorSchemeDescription[color_scheme as keyof typeof colorSchemeDescription]}`;
     }
 
-    if (prompt){
-      prompt += `, additional details: ${prompt_used}`
+    if (prompt) {
+      prompt += `, additional details: ${prompt_used}`;
     }
 
     prompt += `thumbnail should be ${aspect_ratio} ratio. visually stunning and designed to maximize click-through rates. make it bold ,professional and impossible to ignore`;
 
     // Call the Gemini API to generate the thumbnail
 
-    const response = await ai.models.generateContent({
+    const aiResponse = await ai.models.generateContent({
       model: model,
       contents: prompt,
       config: generationConfig,
-    })
-    if(!response?.candidates?.[0]?.content?.parts){
+    });
+    if (!aiResponse?.candidates?.[0]?.content?.parts) {
       throw new Error("No content generated");
     }
 
-    const parts = response.candidates[0].content.parts;
+    const parts = aiResponse.candidates[0].content.parts;
 
     let finalBuffer: Buffer | null = null;
 
     for (const part of parts) {
-      if(part.inlineData){
+      if (part.inlineData?.data) {
         finalBuffer = Buffer.from(part.inlineData.data, "base64");
       }
     }
     const fileName = `finaloutput-${thumbnail._id}.png`;
     const filePath = path.join("images", fileName);
+
+    if (!finalBuffer) {
+      throw new Error("No image data found in response");
+    }
+    fs.mkdirSync("images", { recursive: true });
+    fs.writeFileSync(filePath, finalBuffer);
+
+    const cloudinaryResponse = await cloudinary.uploader.upload(filePath, {
+      resource_type: "image",
+    });
+
+    thumbnail.image_url = cloudinaryResponse.url;
+    thumbnail.isGenerating = false;
+    await thumbnail.save();
+
+    response.json({
+      message: "Thumbnail created successfully",
+      thumbnail: thumbnail,
+    });
+
+    fs.unlinkSync(filePath);
   } catch (error) {
     console.error("Error creating thumbnail:", error);
     response.status(500).json({ error: "Failed to create thumbnail" });
