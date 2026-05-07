@@ -183,3 +183,18 @@ export async function createThumbnail(request: Request, response: Response) {
     response.status(500).json({ error: "Failed to create thumbnail" });
   }
 }
+
+export async function deleteThumbnail(request: Request, response: Response) {
+  try {
+    const {id} = request.params;
+    const {userId} = request.session;
+
+    await Thumbnail.findByIdAndDelete({_id: id, userId});
+
+    response.json({message: "Thumbnail deleted successfully"});
+  } catch (error) {
+     console.error("Error creating thumbnail:", error);
+    response.status(500).json({ error: "Failed to create thumbnail" });
+  
+  }
+}
